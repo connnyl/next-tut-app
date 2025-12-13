@@ -4,6 +4,7 @@ import { addTodo } from "@/api";
 import { FormEventHandler, useState } from "react";
 import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from 'uuid';
+import { Button } from "@/components/ui/button";
 
 const AddTaskForm = () => {
     const router = useRouter();
@@ -22,9 +23,9 @@ const AddTaskForm = () => {
 
     return (
         <form onSubmit={handleSubmitNewTodo} className="mx-auto w-full max-w-md">
-            <div className="modal-action">
+            <div className="flex justify-end items-center gap-2">
                 <input value={newTaskValue} onChange={e => setNewTaskValue(e.target.value)} type="text" placeholder="Type here" className="input w-full" />
-                <button type="submit" className="btn">Submit</button>
+                <Button type="submit">Submit</Button>
             </div>
         </form>
     )

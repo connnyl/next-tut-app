@@ -6,6 +6,7 @@ import { FiEdit, FiTrash2 } from "react-icons/fi";
 import Modal from "./Modal";
 import { useRouter } from "next/navigation";
 import { deleteTodo, editTodo } from "@/api";
+import { Button } from "@/components/ui/button";
 
 interface TaskProps {
   task: ITask;
@@ -45,7 +46,7 @@ const Task: React.FC<TaskProps> = ({ task }) => {
                         <h3 className="font-bold text-lg">Edit task</h3>
                         <div className="modal-action">
                             <input value={taskToEdit} onChange={e => setTaskToEdit(e.target.value)} type="text" placeholder="Type here" className="input w-full" />
-                            <button type="submit" className="btn">Submit</button>
+                            <Button type="submit">Submit</Button>
                         </div>
                     </form>
                 </Modal>
@@ -53,7 +54,7 @@ const Task: React.FC<TaskProps> = ({ task }) => {
                 <Modal modalOpen={openModalDelete} setModalOpen={setOpenModalDelete}>
                     <h3 className="text-lg">Are you sure you want to delete this task?</h3>
                     <div className="modal-action">
-                        <button onClick={() => handleDeleteTask(task.id)} className="btn">Yes</button>
+                        <Button type="button" onClick={() => handleDeleteTask(task.id)}>Yes</Button>
                     </div>
                 </Modal>
             </td>
