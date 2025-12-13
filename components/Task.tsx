@@ -7,6 +7,7 @@ import Modal from "./Modal";
 import { useRouter } from "next/navigation";
 import { deleteTodo, editTodo } from "@/api";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 interface TaskProps {
   task: ITask;
@@ -20,11 +21,12 @@ const Task: React.FC<TaskProps> = ({ task }) => {
 
     const handleSubmitEditTodo: FormEventHandler<HTMLFormElement> = async (e) => {
         e.preventDefault();
+        const text = taskToEdit.trim();
+        if (!text) return;
         await editTodo({
             id: task.id,
-            text: taskToEdit,
-        }
-        );
+            text,
+        });
         setOpenModalEdit(false);
         router.refresh();
     }
@@ -44,9 +46,18 @@ const Task: React.FC<TaskProps> = ({ task }) => {
                 <Modal modalOpen={openModalEdit} setModalOpen={setOpenModalEdit}>
                     <form onSubmit={handleSubmitEditTodo}>
                         <h3 className="font-bold text-lg">Edit task</h3>
+                        <span className="sr-only">Edit task {task.id}</span>
                         <div className="modal-action">
-                            <input value={taskToEdit} onChange={e => setTaskToEdit(e.target.value)} type="text" placeholder="Type here" className="input w-full" />
-                            <Button type="submit">Submit</Button>
+                            <Input
+                              id={`edit-task-${task.id}`}
+                              value={taskToEdit}
+                              onChange={e => setTaskToEdit(e.target.value)}
+                              type="text"
+                              placeholder="Type here"
+                              className="w-full"
+                              aria-label="Edit task"
+                            />
+                            <Button type="submit" disabled={taskToEdit.trim() === ""}>Submit</Button>
                         </div>
                     </form>
                 </Modal>
