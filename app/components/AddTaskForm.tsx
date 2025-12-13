@@ -23,8 +23,8 @@ const AddTaskForm = () => {
     return (
         <form onSubmit={handleSubmitNewTodo} className="mx-auto w-full max-w-md">
             <div className="modal-action">
-                <input value={newTaskValue} onChange={e => setNewTaskValue(e.target.value)} type="text" placeholder="Type here" className="input w-full" />
-                <button type="submit" className="btn">Submit</button>
+                <input value={newTaskValue} onChange={e => setNewTaskValue(e.target.value)} type="text" placeholder="Type here" className="input w-full input-primary" />
+                <button type="submit" className="btn btn-primary">Submit</button>
             </div>
         </form>
     )
