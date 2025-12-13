@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { deleteTodo, editTodo } from "@/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { TableRow, TableCell } from "@/components/ui/table";
 
 interface TaskProps {
   task: ITask;
@@ -39,10 +40,14 @@ const Task: React.FC<TaskProps> = ({ task }) => {
     }
 
     return (
-        <tr key={task.id}>
-            <td className="w-full">{task.text}</td>
-            <td className="flex gap-5">
-                <FiEdit onClick={() => setOpenModalEdit(true)} cursor="pointer" className="text-blue-500" size={25} />
+        <TableRow key={task.id}>
+            <TableCell className="w-full">{task.text}</TableCell>
+            <TableCell className="flex gap-5">
+                <FiEdit
+                  onClick={() => setOpenModalEdit(true)}
+                  className="text-blue-500 cursor-pointer"
+                  size={25}
+                />
                 <Modal modalOpen={openModalEdit} setModalOpen={setOpenModalEdit}>
                     <form onSubmit={handleSubmitEditTodo}>
                         <h3 className="font-bold text-lg">Edit task</h3>
@@ -61,15 +66,19 @@ const Task: React.FC<TaskProps> = ({ task }) => {
                         </div>
                     </form>
                 </Modal>
-                <FiTrash2 onClick={() => setOpenModalDelete(true)} cursor="pointer" className="text-red-500" size={25} />
+                <FiTrash2
+                  onClick={() => setOpenModalDelete(true)}
+                  className="text-red-500 cursor-pointer"
+                  size={25}
+                />
                 <Modal modalOpen={openModalDelete} setModalOpen={setOpenModalDelete}>
                     <h3 className="text-lg">Are you sure you want to delete this task?</h3>
                     <div className="modal-action">
                         <Button type="button" onClick={() => handleDeleteTask(task.id)}>Yes</Button>
                     </div>
                 </Modal>
-            </td>
-        </tr>
+            </TableCell>
+        </TableRow>
     )
 }
 
