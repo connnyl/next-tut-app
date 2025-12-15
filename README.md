@@ -1,5 +1,5 @@
 # next-tut-app
-simple todo app modified based on Cand Dev's tutorial
+simple todo app modified based on Cand Dev's tutorial: [Tutorial Link](https://www.youtube.com/watch?v=wi2xdrpmJNk&t=3317s)
 
 # Project Details
 
