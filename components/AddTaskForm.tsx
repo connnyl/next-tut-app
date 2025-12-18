@@ -10,16 +10,24 @@ import { Input } from "@/components/ui/input";
 const AddTaskForm = () => {
     const router = useRouter();
     const [newTaskValue, setNewTaskValue] = useState<string>("");
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
 
     const handleSubmitNewTodo: FormEventHandler<HTMLFormElement> = async (e) => {
         e.preventDefault();
+        setIsSubmitting(true);
         const text = newTaskValue.trim();
-        if (!text) return;
+        if (!text) {
+            setError("Please enter a task");
+            setIsSubmitting(false);
+            return;
+        }
         await addTodo({
             id: uuidv4(),
             text,
         });
         setNewTaskValue("");
+        setIsSubmitting(false);
         router.push("/");
     }
 
@@ -37,7 +45,8 @@ const AddTaskForm = () => {
                   autoFocus
                   aria-label="New task"
                 />
-                <Button type="submit" disabled={newTaskValue.trim() === ""}>Submit</Button>
+                <Button type="submit" disabled={newTaskValue.trim() === "" || isSubmitting}>Submit</Button>
+                {error && <p className="text-red-500">{error}</p>}
             </div>
         </form>
     )
