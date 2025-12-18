@@ -67,7 +67,7 @@ const Task: React.FC<TaskProps> = ({ task }) => {
                         </form>
 
                         <DialogFooter>
-                            <DialogClose>
+                            <DialogClose asChild>
                                 <Button type="button" variant="secondary" onClick={() => setIsEditOpen(false)} className="cursor-pointer">Cancel</Button>
                             </DialogClose>
                             
@@ -91,7 +91,7 @@ const Task: React.FC<TaskProps> = ({ task }) => {
                         <p>Are you sure you want to delete this task?</p>
 
                         <DialogFooter>
-                            <DialogClose>
+                            <DialogClose asChild>
                                 <Button type="button" variant="secondary" onClick={() => setIsDeleteOpen(false)} className="cursor-pointer">Cancel</Button>
                             </DialogClose>
 
