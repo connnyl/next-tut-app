@@ -1,6 +1,15 @@
-import { ITask } from "./types/tasks"
+import { taskSchema } from "./lib/schemas";
+import { ITask } from "./lib/tasks"
 
 const baseURL = "http://localhost:3001"
+
+async function getErrorMessage(res: Response) {
+  try {
+    const data = await res.json();
+    if (typeof data?.message === "string") return data.message;
+  } catch {}
+  return `Request failed (${res.status})`;
+}
 
 export const getAllTodos = async (): Promise<ITask[]> => {
     const res = await fetch(`${baseURL}/tasks`, {cache: "no-store"});
@@ -16,8 +25,19 @@ export const addTodo = async (todo: ITask): Promise<ITask> => {
         },
         body: JSON.stringify(todo),
     });
-    const newTodo = await res.json();
-    return newTodo;
+
+    if (!res.ok) {
+        throw new Error(await getErrorMessage(res));
+    }
+
+    const body = await res.json();
+
+    const newTodo = taskSchema.safeParse(body);
+    if (!newTodo.success) {
+        throw new Error("Invalid data received from server");
+    }
+    
+    return newTodo.data;
 }
 
 export const editTodo = async (todo: ITask): Promise<ITask> => {

@@ -1,6 +1,6 @@
 "use client";
 
-import { ITask } from "@/types/tasks"
+import { ITask } from "@/lib/tasks"
 import { FormEventHandler, useState } from "react";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
 import { useRouter } from "next/navigation";

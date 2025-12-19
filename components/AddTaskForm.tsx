@@ -6,10 +6,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-
-type FormValues = {
-    task: string;
-}
+import { zodResolver } from "@hookform/resolvers/zod";
+import { newTaskSchema } from "../lib/schemas";
+import type { FormValues } from "../lib/schemas";
 
 const AddTaskForm = () => {
     const router = useRouter();
@@ -18,18 +17,25 @@ const AddTaskForm = () => {
         register,
         handleSubmit,
         watch,
+        setError,
         formState: { errors, isSubmitting },
-    } = useForm<FormValues>();
+    } = useForm<FormValues>({
+        resolver: zodResolver(newTaskSchema),
+    });
 
     const taskValue = watch("task", "");
 
     const onSubmitNewTodo = async (data: FormValues) => {
-        await addTodo({
-            id: uuidv4(),
-            text: data.task.trim(),
-        });
-
-        router.push("/");
+        try {
+            await addTodo({
+                id: uuidv4(),
+                text: data.task.trim(),
+            });
+            router.push("/");
+        } catch (error) {
+            const message = error instanceof Error ? error.message : "Server error";
+            setError("root", { type: "server", message });
+        }
     }
 
 
@@ -39,10 +45,7 @@ const AddTaskForm = () => {
 
             <div className="flex justify-end items-center gap-2">
                 <Input
-                    {...register("task", {
-                        required: "Task cannot be empty",
-                        validate: (v) => v.trim().length > 0 || "Task cannot be empty",
-                    })}
+                    {...register("task")}
                     id="task"
                     type="text"
                     placeholder="Type here"
