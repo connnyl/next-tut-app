@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { TableRow, TableCell } from "@/components/ui/table";
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Textarea } from "./ui/textarea";
 
 interface TaskProps {
   task: ITask;
@@ -19,6 +20,7 @@ const Task: React.FC<TaskProps> = ({ task }) => {
     const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
     const [isDeleteOpen, setIsDeleteOpen] = useState<boolean>(false);
     const [taskToEdit, setTaskToEdit] = useState<string>(task.text);
+    const [taskDescToEdit, setTaskDescToEdit] = useState<string>(task.description ?? "");
 
     const handleSubmitEditTodo: FormEventHandler<HTMLFormElement> = async (e) => {
         e.preventDefault();
@@ -27,6 +29,7 @@ const Task: React.FC<TaskProps> = ({ task }) => {
         await editTodo({
             id: task.id,
             text,
+            description: taskDescToEdit.trim() || undefined,
         });
         setIsEditOpen(false);
         router.refresh();
@@ -40,7 +43,8 @@ const Task: React.FC<TaskProps> = ({ task }) => {
 
     return (
         <TableRow key={task.id}>
-            <TableCell className="w-full">{task.text}</TableCell>
+            <TableCell>{task.text}</TableCell>
+            <TableCell>{task.description ?? "-"}</TableCell>
             <TableCell className="flex gap-5">
                 <FiEdit
                   onClick={() => {setTaskToEdit(task.text); setIsEditOpen(true);}}
@@ -55,24 +59,35 @@ const Task: React.FC<TaskProps> = ({ task }) => {
                         </DialogHeader>
 
                         <form onSubmit={handleSubmitEditTodo}>
-                            <Input
-                                id={`edit-task-${task.id}`}
-                                value={taskToEdit}
-                                onChange={e => setTaskToEdit(e.target.value)}
-                                type="text"
-                                placeholder="Type here"
-                                className="w-full"
-                                aria-label="Edit task"
-                            />
-                        </form>
+                            <div className="mb-4">
+                                <Input
+                                    id={`edit-task-${task.id}`}
+                                    value={taskToEdit}
+                                    onChange={e => setTaskToEdit(e.target.value)}
+                                    type="text"
+                                    placeholder="Type here"
+                                    className="w-full mb-3"
+                                    aria-label="Edit task"
+                                />
 
-                        <DialogFooter>
-                            <DialogClose asChild>
-                                <Button type="button" variant="secondary" onClick={() => setIsEditOpen(false)} className="cursor-pointer">Cancel</Button>
-                            </DialogClose>
-                            
-                            <Button type="submit" disabled={taskToEdit.trim() === ""}>Submit</Button>
-                        </DialogFooter>
+                                <Textarea
+                                    id={`edit-desc-${task.id}`}
+                                    value={taskDescToEdit}
+                                    onChange={e => setTaskDescToEdit(e.target.value)}
+                                    placeholder="Edit description (optional)"
+                                    className="w-full mb-3 min-h-[80px] resize-none"
+                                    aria-label="Edit description"
+                                />
+                            </div>
+
+                            <DialogFooter>
+                                <DialogClose asChild>
+                                    <Button type="button" variant="secondary" onClick={() => setIsEditOpen(false)} className="cursor-pointer">Cancel</Button>
+                                </DialogClose>
+                                
+                                <Button type="submit" disabled={taskToEdit.trim() === ""}>Submit</Button>
+                            </DialogFooter>
+                        </form>
                     </DialogContent>
                 </Dialog>
 

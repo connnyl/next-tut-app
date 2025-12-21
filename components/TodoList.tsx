@@ -13,6 +13,7 @@ const TodoList: React.FC<TodoListProps> = ({ task }) => {
             <TableHeader>
                 <TableRow>
                     <TableHead>Tasks</TableHead>
+                    <TableHead>Description</TableHead>
                     <TableHead>Actions</TableHead>
                 </TableRow>
             </TableHeader>

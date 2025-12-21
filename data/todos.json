@@ -2,27 +2,33 @@
   "tasks": [
     {
       "id": "1",
-      "text": "go to market"
+      "text": "go to market",
+      "description": "Visit the local market to buy groceries and essentials."
     },
     {
       "id": "2",
-      "text": "learn math"
+      "text": "learn math",
+      "description": "Practice mathematical concepts and solve exercises."
     },
     {
       "id": "3",
-      "text": "go to gym"
+      "text": "go to gym",
+      "description": "Work out at the gym to stay healthy and build strength."
     },
     {
       "id": "4",
-      "text": "buy milk"
+      "text": "buy milk",
+      "description": "Purchase milk from the store for daily use."
     },
     {
       "id": "5",
-      "text": "learn programming"
+      "text": "learn programming",
+      "description": "Study programming concepts and write code."
     },
     {
       "id": "09286d1f-1ded-4230-be38-5dbaedd8cc2f",
-      "text": "learn english"
+      "text": "learn english",
+      "description": "Improve English skills through reading, writing, and practice."
     }
   ]
 }
