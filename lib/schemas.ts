@@ -1,16 +1,19 @@
 import { z } from "zod";
 
-export const newTaskSchema = z.object({
+export const taskSchema = z.object({
     task: z.string().trim().nonempty("Task cannot be empty"),
     description: z.string().trim().optional()
 });
 
-export type FormValues = z.infer<typeof newTaskSchema>;
+export type FormValues = z.infer<typeof taskSchema>;
 
-export const taskSchema = z.object({
+export const taskIdSchema = z.object({
   id: z.string(),
   text: z.string(),
   description: z.string().optional(),
 });
 
-export type Task = z.infer<typeof taskSchema>;
+export const tasksSchema = z.array(taskIdSchema);
+
+export type Task = z.infer<typeof taskIdSchema>;
+export type Tasks = z.infer<typeof tasksSchema>;

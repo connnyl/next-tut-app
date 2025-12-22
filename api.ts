@@ -1,4 +1,4 @@
-import { taskSchema } from "./lib/schemas";
+import { taskIdSchema, tasksSchema } from "./lib/schemas";
 import { ITask } from "./lib/tasks"
 
 const baseURL = "http://localhost:3001"
@@ -13,8 +13,18 @@ async function getErrorMessage(res: Response) {
 
 export const getAllTodos = async (): Promise<ITask[]> => {
     const res = await fetch(`${baseURL}/tasks`, {cache: "no-store"});
-    const todos = await res.json();
-    return todos;
+
+    if (!res.ok) {
+        throw new Error(await getErrorMessage(res));
+    }
+
+    const body = await res.json();
+
+    const todosParse = tasksSchema.safeParse(body);
+    if (!todosParse.success) {
+        throw new Error("Invalid data received from server");
+    }
+    return todosParse.data;
 }
 
 export const addTodo = async (todo: ITask): Promise<ITask> => {
@@ -32,7 +42,7 @@ export const addTodo = async (todo: ITask): Promise<ITask> => {
 
     const body = await res.json();
 
-    const newTodo = taskSchema.safeParse(body);
+    const newTodo = taskIdSchema.safeParse(body);
     if (!newTodo.success) {
         throw new Error("Invalid data received from server");
     }
@@ -48,12 +58,27 @@ export const editTodo = async (todo: ITask): Promise<ITask> => {
         },
         body: JSON.stringify(todo),
     });
-    const updatedTodo = await res.json();
-    return updatedTodo;
+
+    if (!res.ok) {
+        throw new Error(await getErrorMessage(res));
+    }
+
+    const body = await res.json();
+    
+    const updatedTodo = taskIdSchema.safeParse(body);
+    if (!updatedTodo.success) {
+        throw new Error("Invalid data received from server");
+    }
+
+    return updatedTodo.data;
 }
 
 export const deleteTodo = async (id: string): Promise<void> => {
-    await fetch(`${baseURL}/tasks/${id}`, {
+    const res = await fetch(`${baseURL}/tasks/${id}`, {
         method: "DELETE",
     });
+
+    if (!res.ok) {
+        throw new Error(await getErrorMessage(res));
+    }
 }

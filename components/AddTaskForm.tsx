@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { newTaskSchema } from "../lib/schemas";
+import { taskSchema } from "../lib/schemas";
 import type { FormValues } from "../lib/schemas";
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
@@ -22,7 +22,7 @@ const AddTaskForm = () => {
         setError,
         formState: { errors, isSubmitting },
     } = useForm<FormValues>({
-        resolver: zodResolver(newTaskSchema),
+        resolver: zodResolver(taskSchema),
     });
 
     const taskValue = watch("task", "");
@@ -32,7 +32,6 @@ const AddTaskForm = () => {
             await addTodo({
                 id: uuidv4(),
                 text: data.task.trim(),
-                // send undefined if empty so backend stores no description instead of empty string
                 description: data.description?.trim() || undefined,
             });
             router.push("/");
@@ -49,7 +48,7 @@ const AddTaskForm = () => {
 
             <div>
                 <div className="mb-4">
-                    <Label htmlFor="task" className="mb-2">Task Name</Label>
+                    <Label htmlFor="task" className="block mb-2">Task Name</Label>
                     <Input
                         {...register("task")}
                         id="task"
@@ -62,7 +61,7 @@ const AddTaskForm = () => {
                 </div>
 
                 <div className="mb-6">
-                    <Label htmlFor="description" className="mb-2">Description</Label>
+                    <Label htmlFor="description" className="block mb-2">Description</Label>
                     <Textarea
                         {...register("description")}
                         id="description"
@@ -82,6 +81,7 @@ const AddTaskForm = () => {
             </div>
             {errors.task && <p className="bg-red-100 text-red-500 mt-4 py-2 px-4 rounded">{errors.task.message}</p>}
             {errors.description && <p className="bg-red-100 text-red-500 mt-2 py-2 px-4 rounded">{errors.description.message}</p>}
+            {errors.root?.message && <p className="bg-red-100 text-red-500 mt-4 py-2 px-4 rounded">{errors.root.message}</p>}
         </form>
     )
 }
