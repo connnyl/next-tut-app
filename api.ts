@@ -1,15 +1,8 @@
 import { taskIdSchema, tasksSchema } from "./lib/schemas";
 import { ITask } from "./lib/tasks"
+import { getErrorMessage } from "./lib/utils";
 
 const baseURL = "http://localhost:3001"
-
-async function getErrorMessage(res: Response) {
-  try {
-    const data = await res.json();
-    if (typeof data?.message === "string") return data.message;
-  } catch {}
-  return `Request failed (${res.status})`;
-}
 
 export const getAllTodos = async (): Promise<ITask[]> => {
     const res = await fetch(`${baseURL}/tasks`, {cache: "no-store"});
