@@ -1,4 +1,4 @@
-import { ITask } from "@/types/tasks";
+import { ITask } from "@/lib/tasks";
 import Task from "./Task"
 import { Table, TableHeader, TableRow, TableHead, TableBody } from "@/components/ui/table";
 
@@ -13,6 +13,7 @@ const TodoList: React.FC<TodoListProps> = ({ task }) => {
             <TableHeader>
                 <TableRow>
                     <TableHead>Tasks</TableHead>
+                    <TableHead>Description</TableHead>
                     <TableHead>Actions</TableHead>
                 </TableRow>
             </TableHeader>
