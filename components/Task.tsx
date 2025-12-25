@@ -48,7 +48,7 @@ const Task: React.FC<TaskProps> = ({ task }) => {
         });
         clearErrors();
         }
-    }, [isEditOpen, reset, clearErrors, task.text, task.description]);
+    }, [isEditOpen]);
 
     const taskValue = watch("task", "");
 
